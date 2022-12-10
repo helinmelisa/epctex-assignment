@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 
 function Home() {
   const [url, setUrl] = useState("");
   const [isValid, setIsValid] = useState(false);
+  const [list,setList] = useState([]);
 
   const validateUrl=(url)=>{
     const regEx=
@@ -21,6 +23,12 @@ function Home() {
 
   const handleAnalyse=(e)=> {
     e.preventDefault();
+    const data = {url}
+    if(url) {
+      setList((ls) => [...ls,data])
+      setUrl("")
+  
+    }
   };
 
   return (
@@ -52,6 +60,24 @@ function Home() {
           </Button>
           </div>
         </form>
+       <div>
+       <h2 className="mt-12 text-lg font-semibold mb-4">Analysis Targets</h2>
+       <div>
+       {list.map((el) =>  {
+        return(
+          <div className="flex bg-slate-300 mb-2 p-4">
+            <div className="flex">
+            <a href={el.url} target="_blank">
+                {el.url}
+            </a>
+                <div className="ml-auto">View More</div>
+            </div>
+          </div>
+        )
+       }
+          )}
+       </div>
+       </div>
        </div>
       </div>
   )
