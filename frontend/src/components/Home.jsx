@@ -1,16 +1,18 @@
 import React, { useState, useEffect  } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
-import { createAnalysis } from "../actions/analysis";
+import { createAnalysis, getAnalysisDetail } from "../actions/analysis";
 import { useDispatch } from "react-redux";
 import { getAnalysis } from "../actions/analysis";
 import AnalysisList from "./AnalysisList";
 import AnalysisDetail from './AnalysisDetail';
 
 
+
 function Home() {
   const [url, setUrl] = useState("");
   const [isValid, setIsValid] = useState(false);
+  const [data, setData] = useState([]);
   const dispatch = useDispatch();
  
 
@@ -30,12 +32,22 @@ function Home() {
   };
   
 
-  const handleAnalyse=(e, data)=> {
-    e.preventDefault();
+  const handleAnalyse=(data)=> {
+    const analysis = [];
     if(isValid) {
       dispatch(createAnalysis({...data}))
-      setUrl("")
-    
+      .then((res) => {
+          const newData = {
+            id:res.analysis.id,
+            url:res.data.url,
+            technologies:res.data.technologies,
+            status:res.data.status,
+            pageCount: res.data.pageCount,
+          }
+          setData(newData);
+          setUrl("");     
+      })
+      
     }  
   };
 

@@ -1,18 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from 'react-bootstrap';
+import AnalysisList from './AnalysisList';
 
-const AnalysisCard = ({id,url,status}) => {
+const AnalysisCard = (data) => {
+
+
   return (
     <div>
       <Card>
       <a
           className="underline text-sm sm:text-base"
-          href={url}
+          href={data.url}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {url}
+          {data.url}
         </a>
         <div>
           <div className="ml-auto relative">
