@@ -8,4 +8,3 @@ router.get("/:id", getAnalysisDetail);
 router.post("/", createAnalysis);
 
 export default router;
-

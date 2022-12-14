@@ -1,5 +1,4 @@
 import Analysis from "../models/analysis.js";
-import { v4 as uuidv4 } from 'uuid';
 import Wappalyzer from 'wappalyzer';
 
 export const getAnalysisDetail = async (req,res) => {
@@ -38,12 +37,11 @@ export const getAnalysis = async (req, res) => {
   };
 
 export const createAnalysis = async (req, res) => {
-    const analysis = req.body;
-    const id = uuidv4();
     try{
         const analysis = req.body;
+        const id = Math.floor(Math.random() * 10000);
         const newAnalysis = new Analysis({
-           id: Math.floor(Math.random() * 10000),
+           id: id,
            url: analysis.url,
            technologies: [],
            status: 'LOADING',
@@ -76,9 +74,9 @@ const options = {
     noRedirect: false,
 };
   
+const wappalyzer = new Wappalyzer(options);
 
-const detectTech = async (url) => {
-    const wappalyzer = new Wappalyzer(options);
+const detectTech = async (id,url) => {
     try {
         await wappalyzer.init();
         const headers = {};
@@ -90,6 +88,7 @@ const detectTech = async (url) => {
         const techArray = [];
             results.technologies.forEach((el) => {
             techArray.push(el.url);
+            console.log(el.url);
     });
 
         const result = await Analysis.findOne({ id: id });
@@ -98,9 +97,10 @@ const detectTech = async (url) => {
         result.pageCount = pageCount;
         result.save();
 
+
     } catch (error) {
-        await wappalyzer.destroy();
         console.error(error);
     }
-};
 
+    await wappalyzer.destroy();
+};

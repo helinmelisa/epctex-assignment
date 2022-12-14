@@ -4,7 +4,10 @@ const analysisSchema = mongoose.Schema({
     id:Number,
     url: String,
     technologies: [String],
-    pageCount: Number,
+    pageCount: {
+        type: Number,
+        default: 0
+    },
     status: {
         type: String,
         default: 'LOADING'
